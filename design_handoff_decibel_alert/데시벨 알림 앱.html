@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <title>데시벨 기반 알림 — Soundwatch</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" />
+  <style>
+    html, body { margin: 0; padding: 0; height: 100%; background: #f0eee9; }
+    body { font-family: "Pretendard", -apple-system, BlinkMacSystemFont, sans-serif; -webkit-font-smoothing: antialiased; }
+    * { box-sizing: border-box; }
+
+    /* 호흡 애니메이션 — 메인 화면 핵심 모션 */
+    @keyframes breathe-soft {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+    }
+    @keyframes breathe-fast {
+      0%, 100% { transform: scale(1); opacity: 0.6; }
+      50% { transform: scale(1.15); opacity: 0.9; }
+    }
+    @keyframes screen-pulse {
+      0%, 100% { opacity: 0; }
+      50% { opacity: 1; }
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    /* 슬라이더 — 네이티브 thumb 숨김 (커스텀 thumb 사용) */
+    .db-slider { -webkit-appearance: none; appearance: none; height: 36px; }
+    .db-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 36px; height: 36px; opacity: 0; cursor: pointer; }
+    .db-slider::-moz-range-thumb { width: 36px; height: 36px; opacity: 0; border: none; cursor: pointer; }
+    .db-slider::-webkit-slider-runnable-track { background: transparent; }
+    .db-slider::-moz-range-track { background: transparent; }
+  </style>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel" src="design-canvas.jsx"></script>
+  <script type="text/babel" src="tweaks-panel.jsx"></script>
+  <script type="text/babel" src="app.jsx"></script>
+
+  <script type="text/babel" data-presets="react">
+    const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+      "mode": "light",
+      "threshold": 65,
+      "simDb": null
+    }/*EDITMODE-END*/;
+
+    function PhoneFrame({ children, dark }) {
+      return (
+        <div style={{
+          width: 380, height: 780, borderRadius: 44, overflow: 'hidden',
+          background: dark ? '#1a1815' : '#FAF6F0',
+          border: '9px solid #2a2823',
+          boxShadow: '0 30px 80px rgba(60, 40, 20, 0.18), 0 4px 12px rgba(0,0,0,.08)',
+          position: 'relative',
+        }}>
+          {children}
+        </div>
+      );
+    }
+
+    function App() {
+      const [tw, setTweak] = useTweaks(TWEAK_DEFAULTS);
+      const mode = tw.mode;
+      const [threshold, setThreshold] = React.useState(tw.threshold);
+      const [simDb, setSimDb] = React.useState(tw.simDb);
+
+      // tweak에서 변경되면 동기화
+      React.useEffect(() => { setThreshold(tw.threshold); }, [tw.threshold]);
+      React.useEffect(() => { setSimDb(tw.simDb); }, [tw.simDb]);
+
+      const dark = mode === 'dark';
+
+      return (
+        <>
+          <DesignCanvas>
+            <DCSection id="brand" title="브랜드 — 앱 아이콘 & 런치 스크린" subtitle="안드로이드 런처와 첫 화면">
+              <DCArtboard id="icon-showcase" label="앱 아이콘 (마스크별)" width={380} height={620} style={{ background: 'transparent', boxShadow: 'none' }}>
+                <PhoneFrame dark={dark}>
+                  <IconShowcase mode={mode} />
+                </PhoneFrame>
+              </DCArtboard>
+              <DCArtboard id="launch" label="런치 스크린" width={380} height={780} style={{ background: 'transparent', boxShadow: 'none' }}>
+                <PhoneFrame dark={dark}>
+                  <LaunchScreen mode={mode} />
+                </PhoneFrame>
+              </DCArtboard>
+            </DCSection>
+            <DCSection id="screens" title="앱 화면" subtitle="청각 장애 부모를 위한 아기 울음 감지 · 워치 진동 알림">
+              <DCArtboard id="onboarding" label="01 · 온보딩" width={380} height={780} style={{ background: 'transparent', boxShadow: 'none' }}>
+                <PhoneFrame dark={dark}>
+                  <OnboardingScreen mode={mode} />
+                </PhoneFrame>
+              </DCArtboard>
+              <DCArtboard id="main-quiet" label="02 · 메인 (조용함)" width={380} height={780} style={{ background: 'transparent', boxShadow: 'none' }}>
+                <PhoneFrame dark={dark}>
+                  <MainScreen mode={mode} threshold={threshold} simDb={null} />
+                </PhoneFrame>
+              </DCArtboard>
+              <DCArtboard id="main-alert" label="03 · 메인 (임계값 초과)" width={380} height={780} style={{ background: 'transparent', boxShadow: 'none' }}>
+                <PhoneFrame dark={dark}>
+                  <MainScreen mode={mode} threshold={threshold} simDb={82} />
+                </PhoneFrame>
+              </DCArtboard>
+              <DCArtboard id="settings" label="04 · 민감도 설정" width={380} height={780} style={{ background: 'transparent', boxShadow: 'none' }}>
+                <PhoneFrame dark={dark}>
+                  <SettingsScreen
+                    mode={mode}
+                    threshold={threshold}
+                    setThreshold={(v) => { setThreshold(v); setTweak('threshold', v); }}
+                  />
+                </PhoneFrame>
+              </DCArtboard>
+            </DCSection>
+          </DesignCanvas>
+
+          <TweaksPanel title="Tweaks">
+            <TweakSection label="모드">
+              <TweakRadio label="테마" value={tw.mode} onChange={(v) => setTweak('mode', v)}
+                options={[{ value: 'light', label: '라이트' }, { value: 'dark', label: '다크' }]} />
+            </TweakSection>
+            <TweakSection label="임계값">
+              <TweakSlider label="알림 발동 dB" min={30} max={100} step={1} value={tw.threshold} unit="dB"
+                onChange={(v) => setTweak('threshold', v)} />
+            </TweakSection>
+            <TweakSection label="메인 화면 시뮬레이션">
+              <TweakRadio label="소음 상태"
+                value={tw.simDb === null ? 'live' : (tw.simDb >= tw.threshold ? 'over' : (tw.simDb >= tw.threshold - 12 ? 'mid' : 'low'))}
+                onChange={(v) => {
+                  if (v === 'live') setTweak('simDb', null);
+                  else if (v === 'low') setTweak('simDb', 35);
+                  else if (v === 'mid') setTweak('simDb', tw.threshold - 6);
+                  else setTweak('simDb', tw.threshold + 18);
+                }}
+                options={[
+                  { value: 'live', label: '실시간' },
+                  { value: 'low', label: '조용' },
+                  { value: 'mid', label: '주의' },
+                  { value: 'over', label: '초과' },
+                ]} />
+            </TweakSection>
+          </TweaksPanel>
+        </>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>

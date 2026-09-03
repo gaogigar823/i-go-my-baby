@@ -1,0 +1,23 @@
+<!-- res/values/themes.xml 또는 styles.xml 의 <resources> 안에 추가 -->
+
+<style name="Theme.App.Starting" parent="Theme.SplashScreen">
+    <!-- 흰 배경 -->
+    <item name="windowSplashScreenBackground">@android:color/white</item>
+    <!-- 아이콘 표시 안 함 (텍스트만 보여주는 단순 스플래시) -->
+    <item name="windowSplashScreenAnimatedIcon">@drawable/splash_icon</item>
+    <item name="windowSplashScreenIconBackgroundColor">@android:color/white</item>
+    <!-- 스플래시 종료 후 사용할 테마 -->
+    <item name="postSplashScreenTheme">@style/Theme.App</item>
+</style>
+
+<!--
+  NOTE: Android 12+ Splash Screen API는 아이콘 + 배경만 보여주고, 자유로운
+  텍스트 배치(예: "I go my baby" + "- 아이고 내새끼 -")는 지원하지 않습니다.
+
+  옵션 A — 권장: Splash Screen API는 아이콘만 보여주고(짧음),
+           이후 첫 Composable로 LaunchScreen()을 1.2초 정도 보여준 뒤
+           OnboardingScreen 또는 MainScreen으로 전환.
+
+  옵션 B — Splash 자체에 텍스트를 넣고 싶다면 windowSplashScreenAnimatedIcon
+           으로 텍스트가 그려진 vector drawable을 만들어 사용 (제한적).
+-->

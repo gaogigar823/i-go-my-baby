@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- 중앙 하트 하나 (Material 3 클린) -->
+    <path
+        android:pathData="M54,74.5 C37.5,62.5 29.5,53 29.5,43 C29.5,35.5 35.5,30 42.5,30 C47.75,30 52,33 54,37.75 C56,33 60.25,30 65.5,30 C72.5,30 78.5,35.5 78.5,43 C78.5,53 70.5,62.5 54,74.5 Z"
+        android:fillColor="#FFFFFF" />
+</vector>
