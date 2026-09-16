@@ -26,6 +26,7 @@ captures/
 *.keystore
 *.apk
 *.aab
+/app/release/
 
 # OS files
 .DS_Store
