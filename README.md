@@ -1,6 +1,22 @@
 # I Go My Baby
 
-청각장애 부모를 위한 안드로이드 소음 감지 알림 앱입니다. 스마트폰 마이크로 주변 소리의 크기를 실시간 측정하고, 설정한 임계값을 넘으면 시스템 알림을 보냅니다. 연결된 워치·스마트밴드에서 이 앱의 알림을 허용하면 손목 진동으로도 알림을 받을 수 있습니다.
+청각이 불편한 부모님들을 위한 안드로이드 소음 감지 앱입니다.
+스마트폰의 마이크로 주변의 데시벨을 측정하여, 특정 임계값을 넘으면 시스템 알림을 보냅니다.
+워치·스마트밴드를 연결하여 시스템 알림을 손목 진동으로도 받을 수 있습니다.
+
+## 목적
+
+사실 저는 실제로 청각이 불편한 부모님들의 진짜 어려움을 모릅니다.
+
+이러한 어려움이 있으시다면 보편화된 스마트폰을 사용하여 좀 더 도움을 줄 수 있지 않을까 생각하면서 만든 것이라, 실제의 어려움과 다를 수 있습니다.
+
+다만 이러한 기능이 누군가에게는 도움이 될 수 있지 않을까 하는 마음에서 만들게 된 것이라 기능이 모자라거나 실효성이 없다고 해도 양해 부탁드립니다.
+
+## 앱 화면
+
+| 런치 화면 | 온보딩 | 소음 감지 |
+| --- | --- | --- |
+| <img src="docs/images/launch-screen.jpg" width="260" alt="I Go My Baby 런치 화면" /> | <img src="docs/images/onboarding.jpg" width="260" alt="온보딩 화면" /> | <img src="docs/images/main-screen.jpg" width="260" alt="소음 감지 메인 화면" /> |
 
 ## 주요 기능
 
@@ -49,30 +65,4 @@
 
 ```bash
 ./gradlew test
-```
-
-## APK 릴리스 자동화
-
-`v1.0.0`처럼 `v`로 시작하는 태그를 푸시하면 GitHub Actions가 서명된 release APK를 빌드하고 GitHub Release에 `app-release.apk` 자산으로 업로드합니다. 태그 없이도 GitHub의 **Actions → Release APK → Run workflow**에서 릴리스 태그를 입력해 실행할 수 있습니다.
-
-처음 한 번은 저장소의 **Settings → Secrets and variables → Actions**에 다음 Repository secrets를 등록해야 합니다. 서명키 원본 파일이나 비밀번호는 저장소에 커밋하지 마세요.
-
-| Secret | 값 |
-| --- | --- |
-| `ANDROID_KEYSTORE_BASE64` | release keystore 파일을 Base64로 인코딩한 값 |
-| `ANDROID_KEYSTORE_PASSWORD` | keystore 비밀번호 |
-| `ANDROID_KEY_ALIAS` | key alias |
-| `ANDROID_KEY_PASSWORD` | key 비밀번호 |
-
-macOS에서는 키스토어를 다음처럼 Base64로 변환할 수 있습니다.
-
-```bash
-base64 -i release.jks -o release.jks.base64
-```
-
-릴리스 태그를 만들고 푸시하는 예시는 다음과 같습니다.
-
-```bash
-git tag v1.0.0
-git push origin v1.0.0
 ```
