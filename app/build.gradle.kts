@@ -21,9 +21,33 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    // GitHub Actions에서만 주입되는 서명 정보입니다. 키스토어와 비밀번호는 저장소에
+    // 포함하지 않으며, 로컬 release 빌드는 서명 설정이 없으면 기존처럼 unsigned입니다.
+    val signingStoreFile = System.getenv("SIGNING_STORE_FILE")
+    val signingStorePassword = System.getenv("SIGNING_STORE_PASSWORD")
+    val signingKeyAlias = System.getenv("SIGNING_KEY_ALIAS")
+    val signingKeyPassword = System.getenv("SIGNING_KEY_PASSWORD")
+
+    if (
+        !signingStoreFile.isNullOrBlank() &&
+        !signingStorePassword.isNullOrBlank() &&
+        !signingKeyAlias.isNullOrBlank() &&
+        !signingKeyPassword.isNullOrBlank()
+    ) {
+        signingConfigs {
+            create("release") {
+                storeFile = file(signingStoreFile)
+                storePassword = signingStorePassword
+                keyAlias = signingKeyAlias
+                keyPassword = signingKeyPassword
+            }
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
+            signingConfig = signingConfigs.findByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"

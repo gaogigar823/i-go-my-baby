@@ -50,3 +50,29 @@
 ```bash
 ./gradlew test
 ```
+
+## APK 릴리스 자동화
+
+`v1.0.0`처럼 `v`로 시작하는 태그를 푸시하면 GitHub Actions가 서명된 release APK를 빌드하고 GitHub Release에 `app-release.apk` 자산으로 업로드합니다. 태그 없이도 GitHub의 **Actions → Release APK → Run workflow**에서 릴리스 태그를 입력해 실행할 수 있습니다.
+
+처음 한 번은 저장소의 **Settings → Secrets and variables → Actions**에 다음 Repository secrets를 등록해야 합니다. 서명키 원본 파일이나 비밀번호는 저장소에 커밋하지 마세요.
+
+| Secret | 값 |
+| --- | --- |
+| `ANDROID_KEYSTORE_BASE64` | release keystore 파일을 Base64로 인코딩한 값 |
+| `ANDROID_KEYSTORE_PASSWORD` | keystore 비밀번호 |
+| `ANDROID_KEY_ALIAS` | key alias |
+| `ANDROID_KEY_PASSWORD` | key 비밀번호 |
+
+macOS에서는 키스토어를 다음처럼 Base64로 변환할 수 있습니다.
+
+```bash
+base64 -i release.jks -o release.jks.base64
+```
+
+릴리스 태그를 만들고 푸시하는 예시는 다음과 같습니다.
+
+```bash
+git tag v1.0.0
+git push origin v1.0.0
+```
