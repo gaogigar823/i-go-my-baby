@@ -57,6 +57,16 @@
 
 앱은 특정 웨어러블 SDK에 직접 연결하지 않고 Android 시스템 알림을 사용합니다. Mi Fitness, Galaxy Wearable, Wear OS 등에서 **I Go My Baby의 알림 전달**을 켜면 기기의 정책에 따라 워치 또는 밴드가 진동합니다.
 
+### Mi Fitness 연동 방법
+
+1. Mi Fitness 앱에서 하단의 **장치** 탭을 연 뒤 **알림 및 통화**를 선택합니다.
+2. **앱 알림**을 선택합니다.
+3. 앱 목록에서 **i go my baby**를 활성화합니다.
+
+| 1. 알림 및 통화 | 2. 앱 알림 | 3. i go my baby 활성화 |
+| --- | --- | --- |
+| <img src="docs/images/mi-fitness-step-1.jpg" width="260" alt="Mi Fitness 장치 탭의 알림 및 통화 메뉴" /> | <img src="docs/images/mi-fitness-step-2.jpg" width="260" alt="Mi Fitness 앱 알림 메뉴" /> | <img src="docs/images/mi-fitness-step-3.jpg" width="260" alt="Mi Fitness에서 i go my baby 알림 활성화" /> |
+
 ## 참고 사항
 
 표시되는 dB 값은 스마트폰 마이크의 PCM 신호를 바탕으로 계산한 **상대적인 추정치**입니다. 기기별 마이크 특성과 주변 환경에 따라 실제 음압과 차이가 날 수 있으므로, 필요한 환경에서 임계값을 직접 조절해 사용하세요. 이 앱은 의료기기나 안전장비를 대체하지 않습니다.
